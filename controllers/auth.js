@@ -28,7 +28,6 @@ const login = async(req, res = response) =>{
                msg: 'Credenciales incorrectas'
              });
           }
-
           // Generar el TOKEN = jwt
           const token = await generarJWT(usuarioDB.id);
 
@@ -44,8 +43,22 @@ const login = async(req, res = response) =>{
                msg: 'Hable con el administrador'
           })
      }
-
 }
+
+const renewToken = async(req, res = response) =>{
+      
+     const uid = req.uid;
+     //Generar el Token -JWT
+     const token = await generarJWT(uid);
+
+     res.json({
+          ok:true,
+          token
+     })
+}
+
+
 module.exports = {
-     login
+     login,
+     renewToken
 }
