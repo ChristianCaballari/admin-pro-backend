@@ -84,6 +84,9 @@ const actualizarUsuario = async (req,res = response) => {
                })
           }
           //Actualizaciones
+
+          ///se extrean los campos password, google, email, es decir,
+          // ya no formam parte del objeto a guardar en la db
           const { password, google, email ,...campos } = req.body;
 
           if(usuarioDB.email !== email){
@@ -96,7 +99,14 @@ const actualizarUsuario = async (req,res = response) => {
                }
           }
           //new: true, es para indicarle a mongo que me devuelva el nuevo registro actualizado.
-          campos.email = email;
+          if(!usuarioDB.google){
+               campos.email = email;
+          }else if(usuarioDB.email != email){
+              return res.status(400).json({
+               ok: false,
+               msg: 'Usuarios de google no pueden cambiar su correo'
+              })
+          }
           const usuarioActualizado = await Usuario.findByIdAndUpdate(uid,campos, { new: true});
 
           res.json({

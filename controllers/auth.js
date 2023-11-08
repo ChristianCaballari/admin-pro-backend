@@ -52,10 +52,14 @@ const renewToken = async(req, res = response) =>{
      //Generar el Token -JWT
      const token = await generarJWT(uid);
 
+     //obtener usuario por uid
+     const usuario = await Usuario.findById(uid);
+
      res.json({
           ok:true,
-          token
-     })
+          token,
+          usuario
+     });
 }
 
 const googleSignIn = async(req, res = response) =>{
